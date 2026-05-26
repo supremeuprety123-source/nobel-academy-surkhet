@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
+
+  --color-gold-50: #fefcf3;
+  --color-gold-100: #fdf5d6;
+  --color-gold-200: #f9e6a2;
+  --color-gold-300: #ecd78c;
+  --color-gold-400: #dfc15d;
+  --color-gold-500: #D4AF37;
+  --color-gold-600: #b59228;
+  
+  --color-navy-50: #f8fafc;
+  --color-navy-100: #e2e8f0;
+  --color-navy-800: #1e293b;
+  --color-navy-900: #0f172a;
+  --color-navy-950: #020617;
+}
+
+@utility glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+}
+
+@utility gold-gradient-text {
+  background: linear-gradient(135deg, #fdf5d6, #dfc15d, #D4AF37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@utility gold-border-glow {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+
+  &:hover {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.18);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+}
+
+/* Custom global overrides */
+html, body {
+  background-color: #020617; /* slate-950 */
+  color: #e2e8f0; /* slate-100 */
+  font-family: var(--font-sans);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.4);
+}
+
+/* Cinematic grain overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Layout animations */
+.text-stroke-gold {
+  -webkit-text-stroke: 1px rgba(233, 193, 118, 0.3);
+  color: transparent;
+}
