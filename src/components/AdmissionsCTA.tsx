@@ -17,7 +17,7 @@ export default function AdmissionsCTA({ onApplyClick, onProspectusClick }: Admis
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-slate-950/85 z-10 mix-blend-multiply" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-900 z-10" />
-        
+
         {/* Soft Golden Orbs */}
         <div className="absolute top-[20%] left-[20%] w-[400px] h-[400px] bg-gold-500/5 rounded-full blur-[140px]" />
         <div className="absolute bottom-[20%] right-[20%] w-[350px] h-[350px] bg-gold-400/5 rounded-full blur-[110px]" />
@@ -39,7 +39,7 @@ export default function AdmissionsCTA({ onApplyClick, onProspectusClick }: Admis
           className="inline-flex items-center gap-2.5 px-5 py-2 rounded-none bg-gold-500/5 border border-gold-500/20 text-gold-500 text-xs tracking-widest font-semibold uppercase mb-8"
         >
           <GraduationCap className="w-4 h-4" />
-          <span>JOIN THE LEGACY • SESSION 2026</span>
+          <span>JOIN THE LEGACY</span>
         </motion.div>
 
         {/* Section Heading */}
@@ -98,7 +98,7 @@ export default function AdmissionsCTA({ onApplyClick, onProspectusClick }: Admis
           transition={{ delay: 0.5 }}
           className="text-[10px] sm:text-xs font-mono text-slate-500 tracking-widest uppercase mt-12"
         >
-          Scholarship entrance examinations: June 15, 2026 • surkhet district campus, bagnaskar
+          ..
         </motion.p>
 
       </div>

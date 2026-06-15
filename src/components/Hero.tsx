@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
-import { MapPin } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MapPin, Minimize2, BarChart2, Info } from "lucide-react";
 
 // Simple custom counter component
 function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -8,13 +8,11 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
 
   useEffect(() => {
     let startTime: number | null = null;
-    const duration = 2500; // 2.5 seconds to count up
+    const duration = 2500;
 
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      
-      // Ease-out cubic curve
       const easeProgress = 1 - Math.pow(1 - progress, 3);
       setCount(Math.floor(easeProgress * target));
 
@@ -40,13 +38,15 @@ interface HeroProps {
 }
 
 export default function Hero({ onLearnMoreClick, onTourClick }: HeroProps) {
-  // Track local time in Surkhet (UTC+5:45)
   const [surkhetTime, setSurkhetTime] = useState("");
+  
+  // Interactive Panel States
+  const [leftExpanded, setLeftExpanded] = useState(true);
+  const [rightExpanded, setRightExpanded] = useState(true);
 
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      // Nepal Offset (UTC + 5:45)
       const utc = now.getTime() + now.getTimezoneOffset() * 60000;
       const nepalOffset = 5.75;
       const nepalLocal = new Date(utc + 3600000 * nepalOffset);
@@ -64,178 +64,268 @@ export default function Hero({ onLearnMoreClick, onTourClick }: HeroProps) {
     return () => clearInterval(timer);
   }, []);
 
-  // Title text
-  const titleLine1 = "A Sanctuary of";
-  const titleLine2 = "Higher Learning";
-
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-navy-950 px-4 sm:px-6 md:px-12 pt-28 pb-12"
+      className="relative min-h-screen flex items-end justify-between overflow-hidden bg-slate-950 px-4 sm:px-6 md:px-8 pb-8 lg:pb-12 pt-24"
     >
-      {/* Backdrop */}
+      {/* Background Video Media Canvas */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-slate-950/80 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/50 to-transparent z-10" />
-        
-        {/* Glow Orbs */}
-        <div className="absolute top-[20%] left-[10%] w-[350px] h-[350px] rounded-full bg-gold-500/5 blur-[120px]" />
-        <div className="absolute bottom-[20%] right-[10%] w-[450px] h-[450px] rounded-full bg-gold-400/5 blur-[150px]" />
-
-        <motion.div
-          initial={{ scale: 1.12, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.35 }}
-          transition={{ duration: 1.8, ease: "easeOut" }}
-          className="w-full h-full bg-cover bg-center"
-          style={{
-            backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtJs2NrKAcwg1S-y5HCWpNQzRCUw7X0zpz9MZUWKzXbcMn2gFSImj7pUkke_PBDmhZQaMfEcmBD_M3BUIaIXItJ6XMdxo4ElcrHnihjFbo62esRVwbLuAga_TR2rp1Jp-us341E2cJ6lmZyW3V3ZpTPNoYc2c7Gxl9ViQuFcmHjasAh0hTPUdcYQrgE8kay64QEkZDL3zQSjsujRcg6tVqkC271tdDcp121oAwLP9q6brOj15lYIXKkMhKFi8UpwSkVsglV5sumyA')`,
+        {/* MOBILE FALLBACK IMAGE */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center block lg:hidden"
+          style={{ 
+            backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtJs2NrKAcwg1S-y5HCWpNQzRCUw7X0zpz9MZUWKzXbcMn2gFSImj7pUkke_PBDmhZQaMfEcmBD_M3BUIaIXItJ6XMdxo4ElcrHnihjFbo62esRVwbLuAga_TR2rp1Jp-us341E2cJ6lmZyW3V3ZpTPNoYc2c7Gxl9ViQuFcmHjasAh0hTPUdcYQrgE8kay64QEkZDL3zQSjsujRcg6tVqkC271tdDcp121oAwLP9q6brOj15lYIXKkMhKFi8UpwSkVsglV5sumyA')` 
           }}
         />
+
+        {/* Ambient Dark Blending Frames */}
+        <div className="absolute inset-0 bg-slate-950/80 lg:bg-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/40 z-10 hidden lg:block" />
+
+        {/* Desktop Video Layer */}
+        <div className="w-full h-full hidden lg:block">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover object-center"
+          >
+            <source src="/videos/hero-drone.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
 
-      {/* Hero Content Container */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-stretch border border-white/5 bg-slate-950/30 backdrop-blur-md rounded-lg overflow-hidden">
+      {/* Main Core Viewport Layout Container */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-end justify-between gap-6">
         
-        {/* Left Side: Copy Panel */}
-        <div className="w-full lg:w-[62%] p-8 sm:p-12 lg:p-16 flex flex-col justify-center text-left">
-          {/* Tagline */}
-          <div className="mb-6 flex items-center gap-4">
-            <div className="h-[1px] w-12 bg-gold-500"></div>
-            <span className="text-gold-500 uppercase tracking-[0.4em] text-xs font-semibold">
-              Excellence in Education
-            </span>
-          </div>
-
-          {/* Main Title */}
-          <h1 className="font-serif text-5xl sm:text-6xl md:text-[80px] leading-[0.95] tracking-tight text-white font-light mb-8">
-            <motion.span
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="block"
+        {/* ================= LEFT SIDE PANEL: MAIN HIGHLIGHTS INFO ================= */}
+        <motion.div 
+          layout
+          transition={{ type: "spring", stiffness: 200, damping: 26 }}
+          onClick={() => !leftExpanded && setLeftExpanded(true)}
+          className={`bg-slate-950/85 lg:bg-slate-950/45 lg:backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative overflow-hidden flex flex-col transition-all duration-300
+            ${leftExpanded 
+              ? "w-full lg:w-[58%] p-6 sm:p-10 lg:p-12 h-auto cursor-default" 
+              : "w-fit p-4 lg:p-5 h-auto bg-slate-950/95 cursor-pointer hover:bg-slate-900/90 hover:border-amber-500/40 hover:-translate-y-1 active:scale-98 select-none"
+            }
+          `}
+        >
+          {/* Collapse Action Button (Only visible when open) */}
+          {leftExpanded && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation(); // Prevents immediate re-expansion trigger from bubbling to parent div
+                setLeftExpanded(false);
+              }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-amber-400 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-all cursor-pointer z-30"
+              title="Collapse Panel"
             >
-              Nurturing
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="gold-gradient-text italic font-normal block"
-            >
-              Global Leaders.
-            </motion.span>
-          </h1>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-base sm:text-lg text-slate-400 font-light leading-relaxed max-w-md mb-10"
-          >
-            Experience world-class learning in the heart of Karnali. Nobel Academy Surkhet combines traditional values with modern cinematic pedagogy.
-          </motion.p>
-
-          {/* Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6"
-          >
-            <button
-              onClick={onLearnMoreClick}
-              className="px-10 py-5 bg-gold-500 text-slate-950 font-bold uppercase tracking-widest text-xs hover:bg-white transition-all cursor-pointer text-center"
-            >
-              Discover Our Programs
+              <Minimize2 className="w-4 h-4" />
             </button>
+          )}
 
-            <button
-              onClick={onTourClick}
-              className="px-10 py-5 border border-white/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-all cursor-pointer text-center"
+          <AnimatePresence mode="wait">
+            {leftExpanded ? (
+              <motion.div
+                key="left-expanded-content"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.2 }}
+                className="w-full flex flex-col"
+              >
+                {/* Tagline */}
+                <div className="mb-4 lg:mb-6 flex items-center gap-3">
+                  <div className="h-[2px] w-12 bg-amber-500" />
+                  <span className="text-amber-400 uppercase tracking-[0.4em] text-[10px] lg:text-xs font-bold">
+                    Excellence in Education
+                  </span>
+                </div>
+
+                {/* Main Title */}
+                <h1 className="font-serif text-4xl sm:text-5xl lg:text-[70px] leading-[1.05] lg:leading-[0.95] tracking-tight text-white font-light mb-6">
+                  <span className="block drop-shadow-[0_4px_12px_rgba(0,0,0,1)]">Nurturing</span>
+                  <span className="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 bg-clip-text text-transparent italic font-normal block drop-shadow-[0_4px_12px_rgba(0,0,0,1)]">
+                    Global Leaders.
+                  </span>
+                </h1>
+
+                {/* Description */}
+                <p className="text-sm sm:text-base text-slate-100 font-light leading-relaxed max-w-md mb-8 drop-shadow-[0_2px_6px_rgba(0,0,0,1)]">
+                  Experience world-class learning in the heart of Karnali. Nobel Academy Surkhet combines traditional values with modern cinematic pedagogy.
+                </p>
+
+                {/* Call to Action Buttons */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                  <button
+                    onClick={onLearnMoreClick}
+                    className="px-8 py-4 bg-amber-500 text-slate-950 font-bold uppercase tracking-widest text-xs hover:bg-amber-400 shadow-xl transition-all cursor-pointer text-center active:scale-95"
+                  >
+                    Discover Our Programs
+                  </button>
+                  <button
+                    onClick={onTourClick}
+                    className="px-8 py-4 border-2 border-white/30 text-white font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-slate-950 transition-all duration-300 cursor-pointer text-center backdrop-blur-md active:scale-95"
+                  >
+                    Virtual Tour
+                  </button>
+                </div>
+
+                {/* Nepal Info Banner */}
+                <div className="mt-8 lg:mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] text-slate-200 tracking-wider font-mono border-t border-white/10 pt-4 w-fit">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
+                    <span>BIRENDRANAGAR, SURKHET, NEPAL</span>
+                  </div>
+                  <div className="h-4 w-[1px] bg-white/20 hidden sm:block" />
+                  <div>
+                    <span>SURKHET TIME: </span>
+                    <span className="text-amber-400 font-medium">{surkhetTime || "00:00:00 AM"}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              /* Minimized Bottom-Left Tab */
+              <motion.div
+                key="left-collapsed-content"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="flex items-center gap-4"
+              >
+                <div className="p-2.5 rounded-xl bg-amber-500 text-slate-950 shadow-md">
+                  <Info className="w-5 h-5" />
+                </div>
+                <div className="text-left font-mono pr-2">
+                  <p className="text-xs text-amber-400 font-bold uppercase tracking-wider">Show Info</p>
+                  <p className="text-[9px] text-slate-400 uppercase">Nobel Academy Panel</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+
+        {/* ================= RIGHT SIDE PANEL: INTERACTIVE METRICS ================= */}
+        <motion.div 
+          layout
+          transition={{ type: "spring", stiffness: 200, damping: 26 }}
+          onClick={() => !rightExpanded && setRightExpanded(true)}
+          className={`bg-slate-950/85 lg:bg-slate-950/45 lg:backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative overflow-hidden flex flex-col transition-all duration-300
+            ${rightExpanded 
+              ? "w-full lg:w-[36%] p-6 sm:p-8 flex flex-col gap-4 lg:gap-6 h-auto cursor-default" 
+              : "w-fit p-4 lg:p-5 h-auto bg-slate-950/95 cursor-pointer hover:bg-slate-900/90 hover:border-amber-500/40 hover:-translate-y-1 active:scale-98 select-none"
+            }
+          `}
+        >
+          {/* Collapse Action Button (Only visible when open) */}
+          {rightExpanded && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation(); // Prevents immediate re-expansion trigger from bubbling to parent div
+                setRightExpanded(false);
+              }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-amber-400 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-all cursor-pointer z-30"
+              title="Collapse Panel"
             >
-              Virtual Tour
+              <Minimize2 className="w-4 h-4" />
             </button>
-          </motion.div>
+          )}
 
-          {/* Nepal Info Banner */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] text-slate-500 tracking-wider font-mono border-t border-white/5 pt-6 w-fit"
-          >
-            <div className="flex items-center gap-2">
-              <MapPin className="w-3.5 h-3.5 text-gold-500" />
-              <span>BIRENDRANAGAR, SURKHET, NEPAL</span>
-            </div>
-            <div className="h-4 w-[1px] bg-white/10 hidden sm:block"></div>
-            <div>
-              <span>SURKHET TIME: </span>
-              <span className="text-gold-300 font-medium">{surkhetTime || "00:00:00 AM"}</span>
-            </div>
-          </motion.div>
+          <AnimatePresence mode="wait">
+            {rightExpanded ? (
+              <motion.div
+                key="right-expanded-content"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.2 }}
+                className="w-full flex flex-col gap-4 lg:gap-5"
+              >
+                {/* Metric Card 1 */}
+                <div className="p-4 rounded-xl border border-white/5 bg-slate-950/50 transition-all hover:border-amber-500/30 hover:bg-slate-900/40 hover:-translate-y-0.5 group">
+                  <span className="text-amber-400 text-3xl font-serif block mb-1">
+                    <AnimatedCounter target={1497} suffix="+" />
+                  </span>
+                  <span className="uppercase tracking-widest text-[9px] text-slate-300 font-bold">
+                    Enrolled Minds
+                  </span>
+                  <p className="text-xs text-slate-400 mt-1 font-light">
+                    Nurturing thinkers, pioneers, and global champions.
+                  </p>
+                </div>
+
+                {/* Metric Card 2 */}
+                <div className="p-4 rounded-xl border border-white/5 bg-slate-950/50 transition-all hover:border-amber-500/30 hover:bg-slate-900/40 hover:-translate-y-0.5 group">
+                  <span className="text-amber-400 text-3xl font-serif block mb-1">
+                    <AnimatedCounter target={100} suffix="%" />
+                  </span>
+                  <span className="uppercase tracking-widest text-[9px] text-slate-300 font-bold">
+                    Academic Success Score
+                  </span>
+                  <p className="text-xs text-slate-400 mt-1 font-light">
+                    Maintaining flawless performance in board standings.
+                  </p>
+                </div>
+
+                {/* Spotlight Block */}
+                <div className="p-4 border border-amber-500/20 bg-slate-950/80 rounded-xl shadow-lg relative overflow-hidden">
+                  <h3 className="text-amber-400 uppercase tracking-[0.2em] text-xs font-bold mb-3 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 relative flex">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    </span>
+                    Latest Spotlight
+                  </h3>
+                  <div className="space-y-2">
+                    <p className="text-[11px] text-slate-200 font-light leading-snug">
+                      • Admissions Open for This Year.
+                    </p>
+                    <p className="text-[11px] text-slate-200 font-light leading-snug">
+                      • Rewarded as Karnali Province One of the Best school .
+                    </p>
+                  </div>
+                  <a
+                    href="#notice-board"
+                    className="inline-block mt-3 text-[10px] uppercase font-bold tracking-widest border-b border-amber-400 pb-0.5 text-amber-400 hover:text-white"
+                  >
+                    View Notice board
+                  </a>
+                </div>
+              </motion.div>
+            ) : (
+              /* Minimized Bottom-Right Tab */
+              <motion.div
+                key="right-collapsed-content"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="flex items-center gap-4"
+              >
+                <div className="p-2.5 rounded-xl bg-amber-500 text-slate-950 shadow-md">
+                  <BarChart2 className="w-5 h-5" />
+                </div>
+                <div className="text-left font-mono pr-2">
+                  <p className="text-xs text-amber-400 font-bold uppercase tracking-wider">Show Stats</p>
+                  <p className="text-[9px] text-slate-400 uppercase">Metrics & Spotlight</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+      </div>
+
+      {/* Cinematic Mouse Indicator */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 hidden lg:block">
+        <div className="w-6 h-9 border-2 border-white/20 rounded-full flex justify-center p-1 backdrop-blur-sm">
+          <motion.div 
+            animate={{ y: [0, 10, 0], opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="w-1 h-1.5 bg-amber-400 rounded-full"
+          />
         </div>
-
-        {/* Right Side: Metrics Panel */}
-        <div className="w-full lg:w-[38%] border-t lg:border-t-0 lg:border-l border-white/5 bg-slate-950/40 p-8 sm:p-12 flex flex-col justify-center gap-8">
-          
-          {/* Metric Card 1 */}
-          <div className="glass-card p-8 rounded-sm transition-all duration-300">
-            <span className="text-gold-500 text-4xl font-serif block mb-1">
-              <AnimatedCounter target={1497} suffix="+" />
-            </span>
-            <span className="uppercase tracking-widest text-[10px] text-slate-400 font-bold">
-              Enrolled Minds
-            </span>
-            <p className="text-xs text-slate-500 mt-2 font-light">
-              Nurturing thinkers, pioneers, and global champions.
-            </p>
-          </div>
-
-          {/* Metric Card 2 */}
-          <div className="glass-card p-8 rounded-sm transition-all duration-300">
-            <span className="text-gold-500 text-4xl font-serif block mb-1">
-              <AnimatedCounter target={100} suffix="%" />
-            </span>
-            <span className="uppercase tracking-widest text-[10px] text-slate-400 font-bold">
-              Academic Success Score
-            </span>
-            <p className="text-xs text-slate-500 mt-2 font-light">
-              Maintaining flawless performance in NEB board and provincial standings.
-            </p>
-          </div>
-
-          {/* Spotlight Block */}
-          <div className="p-8 border border-gold-500/20 bg-gold-500/5 rounded-sm">
-            <h3 className="text-gold-500 uppercase tracking-[0.2em] text-xs font-bold mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-ping"></span>
-              Latest Spotlight
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <span className="text-gold-500 text-lg leading-none">•</span>
-                <p className="text-xs text-slate-300 font-light">
-                  Admissions Open for Year 2026/2027. Scholarship quotas claim closing June 10.
-                </p>
-              </div>
-              <div className="flex items-start space-x-3">
-                <span className="text-gold-500 text-lg leading-none">•</span>
-                <p className="text-xs text-slate-300 font-light">
-                  Karnali Province Annual Sports Shield Triumph ceremony coming next week.
-                </p>
-              </div>
-            </div>
-            <a
-              href="#notice-board"
-              className="inline-block mt-6 text-[10px] uppercase font-bold tracking-widest border-b border-gold-500 pb-1 text-gold-500 hover:text-white hover:border-white transition-all cursor-pointer"
-            >
-              View Notice board
-            </a>
-          </div>
-
-        </div>
-
       </div>
 
     </section>

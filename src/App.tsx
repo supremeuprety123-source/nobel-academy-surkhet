@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, CheckCircle, Send, AlertCircle, Info, PhoneCall, Loader2 } from "lucide-react";
+import { X, CheckCircle, Send, AlertCircle, PhoneCall, Loader2, ChevronDown, Layers, GraduationCap, Award } from "lucide-react";
 import { supabase } from "./lib/supabaseClient";
 
 // Component imports
@@ -17,12 +17,151 @@ import AdmissionsCTA from "./components/AdmissionsCTA";
 import AdminLoginModal from "./components/AdminLoginModal";
 import Footer from "./components/Footer";
 
+// Sleek, clean scroll animation that only affects the Y-axis and opacity. 
+const sectionVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] // Cinematic easing
+    }
+  }
+};
+
+// --- SLIDEABLE PROGRAM SELECTOR SUB-COMPONENT ---
+const academicTiers = [
+  {
+    category: "Early Years & Primary (Nursery - Grade 5)",
+    icon: <Layers className="w-3.5 h-3.5 text-gold-500" />,
+    options: ["Nursery", "LKG", "UKG", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"]
+  },
+  {
+    category: "Secondary Education (Grade 6 - 10)",
+    icon: <GraduationCap className="w-3.5 h-3.5 text-gold-500" />,
+    options: ["Grade 6", "Grade 7", "Grade 8 (BLE)", "Grade 9", "Grade 10 (SEE)"]
+  },
+  {
+    category: "Higher Secondary Plus-2 (NEB)",
+    icon: <Award className="w-3.5 h-3.5 text-gold-500" />,
+    options: ["+2 Management", "+2 Hotel Management"]
+  },
+  {
+    category: "Special Enrolment Schemes",
+    icon: <Award className="w-3.5 h-3.5 text-gold-400 animate-pulse" />,
+    options: ["Scholarship seat"]
+  }
+];
+
+function SlideableProgramSelector({ value, onChange }: { value: string, onChange: (val: string) => void }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  const selectGrade = (option: string) => {
+    onChange(option);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="relative w-full">
+      <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">
+        Program Stream / Level
+      </label>
+
+      {/* Main Trigger Anchor Field */}
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white flex justify-between items-center cursor-pointer select-none transition-all duration-300"
+        style={{ backgroundColor: "#020617" }}
+      >
+        <span className={value ? "text-white" : "text-slate-500"}>
+          {value || "Select a Grade / Stream"}
+        </span>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <ChevronDown className="w-4 h-4 text-slate-400" />
+        </motion.div>
+      </div>
+
+      {/* Accordion Menu Drawer Layout */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Overlay background shield blocker */}
+            <div className="fixed inset-0 z-30" onClick={() => setIsOpen(false)} />
+
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute left-0 right-0 top-[102%] bg-slate-900 border border-white/10 rounded-none shadow-2xl overflow-hidden z-40 max-h-[320px] overflow-y-auto custom-scrollbar"
+            >
+              {academicTiers.map((tier, idx) => {
+                const isExpanded = activeCategory === tier.category;
+
+                return (
+                  <div key={idx} className="border-b border-white/5 last:border-none">
+                    <div
+                      onClick={() => setActiveCategory(isExpanded ? null : tier.category)}
+                      className="w-full px-4 py-3 bg-slate-950/80 hover:bg-slate-950 flex items-center justify-between text-[11px] font-mono tracking-wider font-medium text-slate-300 cursor-pointer select-none transition-colors"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        {tier.icon}
+                        <span>{tier.category}</span>
+                      </div>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-300 ${isExpanded ? "rotate-180 text-gold-500" : ""
+                          }`}
+                      />
+                    </div>
+
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                          className="overflow-hidden bg-slate-900/60"
+                        >
+                          <div className="grid grid-cols-2 gap-1 p-2">
+                            {tier.options.map((option) => (
+                              <button
+                                type="button"
+                                key={option}
+                                onClick={() => selectGrade(option)}
+                                className={`text-left px-3 py-2.5 text-xs font-light transition-all duration-200 border ${value === option
+                                  ? "bg-gold-500/10 text-gold-400 border-gold-500/30 font-medium"
+                                  : "text-slate-400 hover:text-white bg-slate-950/20 border-transparent hover:bg-slate-950/60"
+                                  }`}
+                              >
+                                {option}
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// --- MAIN APP EXPORT ---
 export default function App() {
   const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
-  // 1. ADDED STATE TRACKER: Detects whether the user is requesting a prospectus or general admission
   const [modalType, setModalType] = useState<"apply" | "prospectus">("apply");
 
-  // FIX: Read from localStorage on initial render to keep the admin layout open on page refresh
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
     return localStorage.getItem('nobel_admin_authenticated') === 'true';
   });
@@ -34,17 +173,13 @@ export default function App() {
     name: "",
     phone: "",
     email: "",
-    program: "+2 Science",
+    program: "+2 Management",
     message: ""
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Notice ticker state
-  const [isTickerOpen, setIsTickerOpen] = useState(true);
-
-  // Keep track of submission data separately so it doesn't vanish mid-animation
   const [submittedUser, setSubmittedUser] = useState({ name: "", program: "", phone: "" });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -52,29 +187,23 @@ export default function App() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Helper function to allow our custom slideable selector to update form state
+  const handleProgramChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, program: value }));
+  };
+
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError("");
 
-    // Field validation
-    if (!formData.name.trim()) {
-      setFormError("Full Name is required.");
-      return;
-    }
-    if (!formData.phone.trim() || formData.phone.length < 8) {
-      setFormError("A valid Contact Number is required.");
-      return;
-    }
-    if (!formData.email.includes("@")) {
-      setFormError("Please enter a valid academic or personal email.");
-      return;
-    }
+    if (!formData.name.trim()) return setFormError("Full Name is required.");
+    if (!formData.phone.trim() || formData.phone.length < 8) return setFormError("A valid Contact Number is required.");
+    if (!formData.email.includes("@")) return setFormError("Please enter a valid academic or personal email.");
+    if (!formData.program) return setFormError("Please select a valid grade or stream level.");
 
     setIsSubmitting(true);
 
     try {
-      // 2. DYNAMIC TABLE ROUTING BLOCK
-      // Routes data to either 'prospectus' or 'applications' depending on what button triggered the click
       const targetTable = modalType === "prospectus" ? "prospectus" : "applications";
 
       const { error } = await supabase
@@ -102,13 +231,7 @@ export default function App() {
       setTimeout(() => {
         setFormSubmitted(false);
         setIsInquiryModalOpen(false);
-        setFormData({
-          name: "",
-          phone: "",
-          email: "",
-          program: "+2 Science",
-          message: ""
-        });
+        setFormData({ name: "", phone: "", email: "", program: "+2 Science", message: "" });
       }, 3500);
 
     } catch (err: any) {
@@ -119,116 +242,91 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className="bg-slate-950 text-slate-100 min-h-screen antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-white">
       {isAdminAuthenticated ? (
-        /* 1. CLEAN ADMIN SWITCH: 
-           If authenticated, ONLY render the AdminLayout dashboard panel.
-        */
         <AdminLayout
           onLogout={() => {
-            // FIX: Wipe both authentication keys and view states when logging out
             setIsAdminAuthenticated(false);
             localStorage.removeItem('nobel_admin_authenticated');
             localStorage.removeItem('nobel_admin_current_view');
           }}
         />
       ) : (
-        /* 2. PUBLIC STUDENT SITE WORKSPACE: 
-           Renders normally when not logged into the admin configuration dashboard.
-        */
         <>
-          <AnimatePresence>
-            {isTickerOpen && (
-              <motion.div
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -50, opacity: 0 }}
-                className="bg-slate-950 border-b border-gold-500/10 text-gold-500 text-center py-2.5 px-4 text-[11px] h-auto flex items-center justify-center gap-3 relative z-50 font-sans tracking-widest uppercase font-semibold"
-              >
-                <Info className="w-3.5 h-3.5 text-gold-500 shrink-0" />
-                <span>Admissions Open for Year 2026/2027. Early entrance scholarship exam slot booking runs till June 10.</span>
-                <button
-                  onClick={() => setIsTickerOpen(false)}
-                  className="p-1 hover:bg-white/5 border border-white/10 rounded-none text-gold-500 hover:text-white transition-colors cursor-pointer"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Floating mobile phone action button for Admissions Inquiry */}
-          <div className="fixed bottom-6 right-6 z-30 md:hidden">
+          {/* Floating Mobile Action Button */}
+          <div className="fixed bottom-6 right-6 z-40 md:hidden">
             <motion.button
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => {
                 setModalType("apply");
                 setIsInquiryModalOpen(true);
               }}
-              className="w-14 h-14 rounded-none bg-gold-500 text-slate-950 flex items-center justify-center border border-gold-500/30 shadow-2xl cursor-pointer"
+              className="w-14 h-14 rounded-full bg-gold-500 text-slate-950 flex items-center justify-center border border-gold-400/30 shadow-[0_0_20px_rgba(212,175,55,0.3)] cursor-pointer"
             >
-              <PhoneCall className="w-6 h-6" />
+              <PhoneCall className="w-5 h-5" />
             </motion.button>
           </div>
 
-          {/* Navigation Capsule Bar */}
           <Navbar onInquireClick={() => {
             setModalType("apply");
             setIsInquiryModalOpen(true);
           }} />
 
           <main>
-            {/* Hero Section */}
             <Hero
               onLearnMoreClick={() => {
-                const el = document.getElementById("about");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
+                document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
               }}
               onTourClick={() => {
-                const el = document.getElementById("gallery");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
+                document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
               }}
             />
 
-            {/* About Preview Section */}
-            <section className="relative">
+            <motion.section
+              variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+              className="relative"
+            >
               <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-gold-500/10 to-transparent" />
               <AboutPreview />
-            </section>
+            </motion.section>
 
-            {/* Why Choose Us Accents */}
-            <WhyChooseUs />
+            <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
+              <WhyChooseUs />
+            </motion.section>
 
-            {/* Dynamic Expandable Study Programs Section */}
-            <Programs />
+            <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
+              <Programs />
+            </motion.section>
 
-            {/* Active Notice Board & News */}
-            <NoticeBoard />
+            <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
+              <NoticeBoard />
+            </motion.section>
 
-            {/* Gallery Preview with Lightbox */}
-            <GalleryPreview />
+            <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
+              <GalleryPreview />
+            </motion.section>
 
-            {/* Testimonials and Student Chronicles */}
-            <Testimonials />
+            <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
+              <Testimonials />
+            </motion.section>
 
-            {/* 3. ADMISSIONS CTA PORTAL ACCENTS LINK */}
-            <AdmissionsCTA
-              onApplyClick={() => {
-                setModalType("apply");
-                setIsInquiryModalOpen(true);
-              }}
-              onProspectusClick={() => {
-                setModalType("prospectus"); // Sets table destination mapping target properties
-                setIsInquiryModalOpen(true);
-              }}
-            />
+            <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
+              <AdmissionsCTA
+                onApplyClick={() => {
+                  setModalType("apply");
+                  setIsInquiryModalOpen(true);
+                }}
+                onProspectusClick={() => {
+                  setModalType("prospectus");
+                  setIsInquiryModalOpen(true);
+                }}
+              />
+            </motion.section>
           </main>
 
-          {/* Contact Footer Layout wrapper containing the hidden login trigger link */}
           <div className="relative">
             <Footer />
-
-            {/* Discrete Admin Link Element at the absolute bottom */}
             <div className="bg-slate-950 py-4 text-center border-t border-white/5">
               <button
                 onClick={() => setShowAdminLogin(true)}
@@ -241,7 +339,6 @@ export default function App() {
         </>
       )}
 
-      {/* Login Portal Container Modal */}
       <AdminLoginModal
         isOpen={showAdminLogin}
         onClose={() => setShowAdminLogin(false)}
@@ -252,7 +349,7 @@ export default function App() {
         }}
       />
 
-      {/* Admissions Inquiry Modal Portal */}
+      {/* Inquiry Modal */}
       <AnimatePresence>
         {isInquiryModalOpen && (
           <motion.div
@@ -289,7 +386,6 @@ export default function App() {
                     </span>
                   </div>
 
-                  {/* 4. DYNAMICAL TEXT UPDATER SWITCH CODES */}
                   <h3 className="text-2xl font-serif text-white font-medium leading-tight mt-3">
                     {modalType === "prospectus" ? "Request Prospectus File" : "Admissions Inquiry"}
                   </h3>
@@ -300,11 +396,7 @@ export default function App() {
                   </p>
 
                   {formError && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mb-6 p-4 rounded-none bg-red-500/5 border border-red-500/20 flex items-center gap-3 text-xs text-red-400 leading-relaxed font-light"
-                    >
+                    <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="mb-6 p-4 rounded-none bg-red-500/5 border border-red-500/20 flex items-center gap-3 text-xs text-red-400 leading-relaxed font-light">
                       <AlertCircle className="w-4.5 h-4.5 shrink-0" />
                       <span>{formError}</span>
                     </motion.div>
@@ -312,139 +404,50 @@ export default function App() {
 
                   <form onSubmit={handleInquirySubmit} className="space-y-4">
                     <div>
-                      <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="e.g. Samir Thapa"
-                        className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-700 focus:outline-none transition-all"
-                      />
+                      <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">Full Name</label>
+                      <input type="text" name="name" required value={formData.name} onChange={handleInputChange} placeholder="e.g. Samir Thapa" className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-700 focus:outline-none transition-all" />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">
-                          Personal Email
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          required
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          placeholder="samir@example.com"
-                          className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-700 focus:outline-none transition-all"
-                        />
+                        <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">Personal Email</label>
+                        <input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="samir@example.com" className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-700 focus:outline-none transition-all" />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">
-                          Contact Number
-                        </label>
-                        <input
-                          type="text"
-                          name="phone"
-                          required
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          placeholder="e.g. 9848XXXXXX"
-                          className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-700 focus:outline-none transition-all"
-                        />
+                        <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">Contact Number</label>
+                        <input type="text" name="phone" required value={formData.phone} onChange={handleInputChange} placeholder="e.g. 9848XXXXXX" className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-700 focus:outline-none transition-all" />
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">
-                        Program Stream / Level
-                      </label>
-                      <select
-                        name="program"
-                        value={formData.program}
-                        onChange={handleInputChange}
-                        className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white focus:outline-none transition-all"
-                        style={{ backgroundColor: "#020617" }}
-                      >
-                        <option value="">Select a Grade / Stream</option>
-                        <option value="Nursery">Nursery</option>
-                        <option value="L.K.G">L.K.G</option>
-                        <option value="U.K.G">U.K.G</option>
-                        <option value="Class 1">Class 1</option>
-                        <option value="Class 2">Class 2</option>
-                        <option value="Class 3">Class 3</option>
-                        <option value="Class 4">Class 4</option>
-                        <option value="Class 5">Class 5</option>
-                        <option value="Class 6">Class 6</option>
-                        <option value="Class 7">Class 7</option>
-                        <option value="Class 8">Class 8</option>
-                        <option value="Class 9">Class 9</option>
-                        <option value="Class 10">Class 10</option>
-                        <option value="+2 Science">+2 Science (NEB)</option>
-                        <option value="+2 Management">+2 Management (NEB)</option>
-                        <option value="+2 Hotel Management">+2 Hotel Management (NEB)</option>
-                        <option value="+2 Computer Science">+2 Computer Science (NEB)</option>
-                        <option value="Scholarship seat">Talent Merit Scholarship Scheme</option>
-                      </select>
-                    </div>
+                    {/* NEW SLIDEABLE PROGRAM TUNNEL SELECTOR ENTRY */}
+                    <SlideableProgramSelector
+                      value={formData.program}
+                      onChange={handleProgramChange}
+                    />
 
                     <div>
-                      <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">
-                        Inquiry / Message
-                      </label>
-                      <textarea
-                        name="message"
-                        rows={3}
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        placeholder="Ask about boarding facilities, scholarship deadlines, or course streams..."
-                        className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-700 focus:outline-none transition-all resize-none"
-                      />
+                      <label className="block text-[10px] font-semibold text-slate-500 tracking-wider uppercase mb-1.5">Inquiry / Message</label>
+                      <textarea name="message" rows={3} value={formData.message} onChange={handleInputChange} placeholder="Ask about boarding facilities, scholarship deadlines..." className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-700 focus:outline-none transition-all resize-none" />
                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-gold-500 hover:bg-white text-slate-950 hover:text-slate-900 font-bold tracking-[0.2em] text-xs py-4 rounded-none uppercase flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer disabled:opacity-50"
-                    >
+                    <button type="submit" disabled={isSubmitting} className="w-full bg-gold-500 hover:bg-white text-slate-950 hover:text-slate-900 font-bold tracking-[0.2em] text-xs py-4 rounded-none uppercase flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer disabled:opacity-50">
                       {isSubmitting ? (
-                        <div className="flex items-center gap-2">
-                          <Loader2 size={14} className="animate-spin" />
-                          <span>Streaming to database...</span>
-                        </div>
+                        <div className="flex items-center gap-2"><Loader2 size={14} className="animate-spin" /><span>Processing...</span></div>
                       ) : (
-                        <>
-                          <span>{modalType === "prospectus" ? "Submit File Request" : "Send Inquiry Request"}</span>
-                          <Send className="w-3.5 h-3.5" />
-                        </>
+                        <><span>{modalType === "prospectus" ? "Submit File Request" : "Send Inquiry Request"}</span><Send className="w-3.5 h-3.5" /></>
                       )}
                     </button>
                   </form>
                 </>
               ) : (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-12 flex flex-col items-center gap-6"
-                >
-                  <motion.div
-                    animate={{ scale: [1, 1.15, 1] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="p-4 bg-gold-500/5 rounded-none border border-gold-500/20 text-gold-500"
-                  >
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-12 flex flex-col items-center gap-6">
+                  <motion.div animate={{ scale: [1, 1.15, 1] }} transition={{ repeat: Infinity, duration: 2 }} className="p-4 bg-gold-500/5 rounded-none border border-gold-500/20 text-gold-500">
                     <CheckCircle className="w-14 h-14" />
                   </motion.div>
-
                   <div>
-                    <h3 className="text-2xl font-serif text-white font-medium leading-tight">
-                      Thank You, {submittedUser.name}!
-                    </h3>
+                    <h3 className="text-2xl font-serif text-white font-medium leading-tight">Thank You, {submittedUser.name}!</h3>
                     <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-light mt-4 max-w-sm mx-auto">
-                      {modalType === "prospectus"
-                        ? `Your official prospectus documentation query for ${submittedUser.program} has been processed. Check your contact entry coordinates shortly.`
-                        : `Your interest stream inquiry for ${submittedUser.program} has been secured in our records. Our staff will coordinate to review your lead details shortly.`}
+                      {modalType === "prospectus" ? `Your prospectus query for ${submittedUser.program} is processed.` : `Your inquiry for ${submittedUser.program} is secured.`}
                     </p>
                   </div>
                 </motion.div>
@@ -453,6 +456,6 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

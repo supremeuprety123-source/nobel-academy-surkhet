@@ -19,7 +19,7 @@ const programsData: ProgramItem[] = [
         title: "Pre-School",
         shortDesc: "Nobel School Early Childhood Program with Phonics and Whole Child Development.",
         longDesc: "Our Early Childhood Program focuses on a play-based, child-centered approach that builds fundamental literacy and numeracy skills. Using a comprehensive phonics curriculum, we nurture curiosity, emotional resilience, and cross-sensory development in a secure, loving environment.",
-        image: "https://images.unsplash.com/photo-1576489922094-27a59a01f87c?auto=format&fit=crop&q=80&w=600",
+        image: "https://scontent.fktm3-1.fna.fbcdn.net/v/t39.30808-6/653709917_1334342871837779_2192232408136613973_n.jpg?stp=c256.0.1536.1536a_cp6_dst-jpg_s206x206_tt6&_nc_cat=111&ccb=1-7&_nc_sid=50ad20&_nc_eui2=AeFFA4_CQ8DnAloHKOMGMj3mn88q5DEP7ZefzyrkMQ_tl6E4kwbUDWwD7imOwfK8kV_qkRtounlEReVW6XROx5Dy&_nc_ohc=s_7bupOxgR8Q7kNvwE35kRy&_nc_oc=Ado_nvj5zQCU5REAC6Saum6YcBZJ6eK6av3L_n6X77L3T6AQLbDArWNnu0KFDIwYkcA&_nc_zt=23&_nc_ht=scontent.fktm3-1.fna&_nc_gid=9jokeIHsr6GPVW55x9kJ3g&_nc_ss=7b2a8&oh=00_Af_80b5rDSzLxFBA6XSejBnmeV0E2PlvDdzxcef1o3wEaQ&oe=6A247015",
         highlights: ["Synthetic Phonics Framework", "Sensory & Motor Skill Labs", "Social-Emotional Milestones Track"],
     },
     {
@@ -28,7 +28,7 @@ const programsData: ProgramItem[] = [
         title: "Primary School",
         shortDesc: "Focus on English language, Project based learning and different extra-curricular activities for the holistic development of a child.",
         longDesc: "The Primary tier bridges foundational intuition with structured conceptual knowledge. Through experiential project-based inquiry learning modules, students apply classroom mathematics, science, and multi-lingual language tracks directly to real-world scenarios.",
-        image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=600",
+        image: "/primaryschool.png",
         highlights: ["Inquiry-Based Project Models", "Advanced Linguistic Fluency", "Introductory STEM & Robotics Labs"],
     },
     {
@@ -37,7 +37,7 @@ const programsData: ProgramItem[] = [
         title: "Secondary School",
         shortDesc: "The Lower Secondary school (VI - VIII) is a smooth transition from Primary to Secondary School. The regular syllabus for every subject...",
         longDesc: "Secondary education refines critical analytic reasoning frameworks. Preparing students for academic rigor, our curriculum balances rigorous stem training, secondary board preparation, and ethical debate platforms to establish complete academic sovereignty.",
-        image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=600",
+        image: "https://scontent.fktm3-1.fna.fbcdn.net/v/t39.30808-6/587781171_1246573317281402_4728680125236405064_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEpEEnw9Ms3l66KZLTxbK4j7HqKMlEtl_XseooyUS2X9T-iyq1oynrF6b258ZfDngi5BMQXhwFKI8VhtGs2a1Al&_nc_ohc=O64vjuf5im4Q7kNvwHMVVRw&_nc_oc=AdqAg8qDArIVhRwmtmgGwnQT0FTHCbHQY3lZWeAUhjKNG_VqTFwKlwoZd7_MaXTNfss&_nc_zt=23&_nc_ht=scontent.fktm3-1.fna&_nc_gid=YjAd8f7l2fGgPXdsgU4Y8w&_nc_ss=7b2a8&oh=00_Af-3IA7IFrhTWEPCjqRpTFkxzlb6GPhB6VQyfS7sCl2gbQ&oe=6A24739F",
         highlights: ["Rigorous Analytical Math/Science", "Pre-Board Simulation Systems", "Competitive Debating & Public Speaking"],
     },
     {

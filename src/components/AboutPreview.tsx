@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { ArrowRight, Compass, Shield, Award } from "lucide-react";
 
 export default function AboutPreview() {
@@ -15,7 +15,7 @@ export default function AboutPreview() {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
-          
+
           {/* Visual Composition */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -32,10 +32,11 @@ export default function AboutPreview() {
                   transition={{ duration: 1.5, ease: "easeOut" }}
                   className="w-full h-full bg-cover bg-center"
                   style={{
-                    backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuBV42Yyb2bprakLDbDwNBy_f4f5WN1LxOJi2H8Bt16YolR7l0ugvhSSSbR7oLA_f8jkUSrgHAPSbhL1lhXWEoC8-VDa8TO7F3f-nPoN4ToX2NcIO1WN5pwWs-_wpBPusYWJ6D68QqcJqNJ_cUaBqi4Ul3OWLUDgRBcXXk5xfInX7Bs2NlzxVGIvxAJtzQmdM1b2xG1hChFUfu7EMYWBYYkQ9NjV3BlPFVOZDimve-hKDS9FxkcBP3fturB-ucoowfrixcIYRqRX1Jw')`,
+                    /* Pointing to your image saved in the public directory */
+                    backgroundImage: `url('/schooldrone1.png')`,
                   }}
                 />
-                
+
                 {/* Frosted Detail Card */}
                 <div className="absolute bottom-6 left-6 right-6 p-6 bg-slate-950/85 backdrop-blur-md rounded-none border border-gold-500/20 flex items-center justify-between gap-4">
                   <div>
@@ -43,7 +44,7 @@ export default function AboutPreview() {
                     <p className="text-[11px] text-slate-400 mt-1">Surkhet's premier gold-standard academy</p>
                   </div>
                   <div className="bg-gold-500/10 text-gold-500 px-3 py-1.5 rounded-none text-[10px] tracking-widest font-mono font-medium uppercase border border-gold-500/20">
-                    ESTD. 1998
+                    ESTD. 2067
                   </div>
                 </div>
               </div>
@@ -65,7 +66,7 @@ export default function AboutPreview() {
             >
               Surkhet's Academic Heritage
             </motion.p>
-            
+
             <motion.h2
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}

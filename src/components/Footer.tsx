@@ -44,32 +44,32 @@ export default function Footer() {
           {/* Column 2: Navigation Links */}
           <div className="md:col-span-3">
             <h4 className="text-[10px] font-sans font-semibold text-amber-500 tracking-[0.25em] uppercase mb-8">
-              Academy Portals
+
             </h4>
             <ul className="space-y-4 text-xs sm:text-sm text-slate-400 font-light">
               <li>
                 <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-                  Academic Calendar
+
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-                  Student Console Login
+
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-                  Scholarship Applications
+
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-                  Staff Vacancies / Careers
+
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-                  Nobel Alumni Directory
+
                 </a>
               </li>
             </ul>

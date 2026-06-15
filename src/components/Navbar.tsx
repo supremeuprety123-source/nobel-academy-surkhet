@@ -37,18 +37,16 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-          isScrolled
-            ? "py-4 px-4 md:px-8"
-            : "py-6 px-6 md:px-12"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${isScrolled
+          ? "py-4 px-4 md:px-8"
+          : "py-6 px-6 md:px-12"
+          }`}
       >
         <div
-          className={`mx-auto max-w-7xl transition-all duration-500 rounded-full ${
-            isScrolled
-              ? "bg-navy-950/75 backdrop-blur-xl border border-gold-300/15 py-3 px-6 shadow-2xl shadow-gold-400/5"
-              : "bg-transparent py-2 px-4 border border-transparent"
-          }`}
+          className={`mx-auto max-w-7xl transition-all duration-500 rounded-full ${isScrolled
+            ? "bg-navy-950/75 backdrop-blur-xl border border-gold-300/15 py-3 px-6 shadow-2xl shadow-gold-400/5"
+            : "bg-transparent py-2 px-4 border border-transparent"
+            }`}
         >
           <div className="flex items-center justify-between">
             {/* Logo area */}
@@ -60,11 +58,9 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
               />
               <div className="flex flex-col">
                 <span className="font-sans font-bold tracking-[0.2em] text-sm uppercase text-white">
-                  NOBEL <span className="text-gold-500">Academy</span>
+                  NOBEL <span className="text-gold-500">Academy Surkhet</span>
                 </span>
-                <span className="text-[9px] font-sans text-gold-500/65 uppercase tracking-[0.3em] -mt-0.5">
-                  Surkhet
-                </span>
+
               </div>
             </a>
 

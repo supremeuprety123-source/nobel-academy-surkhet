@@ -80,7 +80,7 @@ const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClose, onLo
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-2 text-xs text-white placeholder-slate-700 focus:outline-none"
-                  placeholder="admin123"
+                  placeholder="Username"
                 />
               </div>
               <div>
@@ -93,7 +93,7 @@ const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClose, onLo
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className="w-full bg-slate-950 border border-white/10 focus:border-gold-500/50 rounded-none px-4 py-2 text-xs text-white placeholder-slate-700 focus:outline-none"
-                  placeholder="••••••••"
+                  placeholder="Password"
                 />
               </div>
               <button
