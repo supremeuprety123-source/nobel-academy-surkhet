@@ -15,7 +15,6 @@ export default function NoticeBoard() {
     try {
       const today = new Date().toISOString().split('T')[0];
 
-      // Fetching records directly without the complex network string filter
       const [noticesRes, newsRes] = await Promise.all([
         supabase.from('notices')
           .select('*')
@@ -26,12 +25,9 @@ export default function NoticeBoard() {
           .order('date', { ascending: false })
       ]);
 
-      // Handle and parse notices data safely in memory
       if (noticesRes.error) {
         console.error("Supabase Notice Fetch Error:", noticesRes.error);
       } else if (noticesRes.data) {
-        console.log("Raw Notices from Database:", noticesRes.data); // Look here in your browser console!
-
         const activeNotices = noticesRes.data.filter(notice => {
           if (!notice.expiry_date) return true;
           return notice.expiry_date >= today;
@@ -39,7 +35,6 @@ export default function NoticeBoard() {
 
         setNotices(activeNotices);
 
-        // Auto-select the first notice if available
         if (activeNotices.length > 0) {
           setSelectedNoticeId(activeNotices[0].id);
         }
@@ -83,7 +78,8 @@ export default function NoticeBoard() {
   if (loading) return <div className="py-20 flex justify-center"><Loader2 className="animate-spin text-amber-500" /></div>;
 
   return (
-    <section id="notice-board" className="relative py-28 md:py-36 bg-slate-900 overflow-hidden px-4 sm:px-6 md:px-12">
+    <section id="notice-board" className="relative py-28 md:py-36 bg-slate-950 overflow-hidden px-4 sm:px-6 md:px-12">
+      {/* Background Orbs */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-[40%] right-[-10%] w-[450px] h-[450px] bg-amber-500/5 rounded-full blur-[130px]" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[120px]" />
@@ -107,7 +103,10 @@ export default function NoticeBoard() {
                     key={notice.id}
                     layout="position"
                     onClick={() => setSelectedNoticeId(isSelected ? null : notice.id)}
-                    className={`p-6 rounded-none border transition-all duration-300 cursor-pointer ${isSelected ? "bg-slate-950 border-amber-500/30 shadow-xl" : "bg-slate-950/20 border-white/5 hover:border-amber-500/15"}`}
+                    className={`p-6 rounded-none border transition-all duration-300 cursor-pointer ${isSelected
+                      ? "bg-slate-950 border-amber-500/30 shadow-xl"
+                      : "bg-slate-950/20 border-white/5 hover:border-amber-500/15"
+                      }`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="flex items-center gap-3 flex-wrap">
@@ -123,7 +122,6 @@ export default function NoticeBoard() {
                       </span>
                     </div>
 
-                    {/* Fixed Heading Mappings: Safely supports topic, title, or heading fields */}
                     <h3 className={`mt-3 text-sm sm:text-base font-semibold tracking-wide ${isSelected ? "text-amber-500" : "text-white"}`}>
                       {notice.topic || notice.title || notice.heading || "Untitled Notice"}
                     </h3>
@@ -157,7 +155,14 @@ export default function NoticeBoard() {
             <h2 className="text-3xl sm:text-4xl font-serif text-white font-medium mb-10 leading-tight">News & Events</h2>
             <div className="space-y-8">
               {newsEvents.map((evt, idx) => (
-                <motion.div key={evt.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.15 }} className="group rounded-none overflow-hidden border border-white/5 bg-slate-950/40 hover:border-amber-500/20 transition-all duration-300">
+                <motion.div
+                  key={evt.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.15 }}
+                  className="group rounded-none overflow-hidden border border-white/5 bg-slate-950/40 hover:border-amber-500/20 transition-all duration-300"
+                >
                   <div className="aspect-video relative overflow-hidden bg-slate-950/60 flex items-center justify-center">
                     {evt.photo_url ? (
                       <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 1.2 }} className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url('${evt.photo_url}')` }} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, Send, AlertCircle, PhoneCall, Loader2, ChevronDown, Layers, GraduationCap, Award } from "lucide-react";
 import { supabase } from "./lib/supabaseClient";
@@ -11,6 +11,7 @@ import WhyChooseUs from "./components/WhyChooseUs";
 import Programs from "./components/programs";
 import NoticeBoard from "./components/NoticeBoard";
 import GalleryPreview from "./components/GalleryPreview";
+import StaticGallery from "./components/StaticGallery"; // <-- 1. Imported our local hardcoded gallery element
 import Testimonials from "./components/Testimonials";
 import AdminLayout from './admin/AdminLayout';
 import AdmissionsCTA from "./components/AdmissionsCTA";
@@ -187,7 +188,6 @@ export default function App() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Helper function to allow our custom slideable selector to update form state
   const handleProgramChange = (value: string) => {
     setFormData((prev) => ({ ...prev, program: value }));
   };
@@ -213,7 +213,7 @@ export default function App() {
             name: formData.name,
             email: formData.email,
             contact: formData.phone,
-            class_applying_for: formData.program || "+2 Science",
+            class_applying_for: formData.program || "+2 Management",
             message: formData.message,
             status: "Pending"
           }
@@ -223,7 +223,7 @@ export default function App() {
 
       setSubmittedUser({
         name: formData.name,
-        program: formData.program || "+2 Science",
+        program: formData.program || "+2 Management",
         phone: formData.phone
       });
       setFormSubmitted(true);
@@ -231,7 +231,7 @@ export default function App() {
       setTimeout(() => {
         setFormSubmitted(false);
         setIsInquiryModalOpen(false);
-        setFormData({ name: "", phone: "", email: "", program: "+2 Science", message: "" });
+        setFormData({ name: "", phone: "", email: "", program: "+2 Management", message: "" });
       }, 3500);
 
     } catch (err: any) {
@@ -303,8 +303,14 @@ export default function App() {
               <NoticeBoard />
             </motion.section>
 
+            {/* Supabase Dynamic Feed Gallery */}
             <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
               <GalleryPreview />
+            </motion.section>
+
+            {/* 2. Direct Hardcoded Files Gallery - Seamlessly stacked below */}
+            <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
+              <StaticGallery />
             </motion.section>
 
             <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
@@ -419,7 +425,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* NEW SLIDEABLE PROGRAM TUNNEL SELECTOR ENTRY */}
                     <SlideableProgramSelector
                       value={formData.program}
                       onChange={handleProgramChange}

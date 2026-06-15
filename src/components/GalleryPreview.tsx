@@ -42,7 +42,7 @@ export default function GalleryPreview() {
   const trailingItems = items.slice(1);
 
   return (
-    <section id="gallery" className="relative py-28 md:py-36 bg-slate-950 overflow-hidden px-4 sm:px-6 md:px-8">
+    <section id="gallery" className="relative py-28 md:py-36 bg-slate-900 overflow-hidden px-4 sm:px-6 md:px-8">
       <div className="absolute inset-0 z-0">
         <div className="absolute top-[20%] left-[-5%] w-[450px] h-[450px] bg-amber-500/5 rounded-full blur-[140px]" />
       </div>
