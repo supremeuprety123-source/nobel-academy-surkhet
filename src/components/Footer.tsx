@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, Phone, MapPin, ArrowUp, Facebook, Instagram, Compass, Navigation } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUp, Facebook, Instagram, Compass, Navigation, Youtube } from "lucide-react";
 
 export default function Footer() {
   const handleScrollToTop = () => {
@@ -170,6 +170,16 @@ export default function Footer() {
                     </svg>
                   </a>
 
+                  {/* YouTube */}
+                  <a
+                    href="https://www.youtube.com/@nasexambranch"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 border border-white/10 hover:border-amber-500/40 text-slate-400 flex items-center justify-center hover:text-amber-400 transition-all bg-slate-900 group"
+                    title="YouTube"
+                  >
+                    <Youtube className="w-4 h-4 group-hover:scale-105 transition-transform" />
+                  </a>
                 </div>
               </div>
             </div>

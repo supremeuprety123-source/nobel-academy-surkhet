@@ -6,7 +6,7 @@ interface LocalMediaItem {
     id: string;
     heading: string;
     type: "Image" | "Video";
-    category: "Academics" | "Sports" | "Cultural" | "Campus Life";
+    category: "Academics" | "Sports" | "Cultural" | "School Life";
     media_url: string; // Path to your local public folder asset
     thumbnail_url?: string; // Optional cover image for video items
     description: string;

@@ -39,7 +39,7 @@ interface HeroProps {
 
 export default function Hero({ onLearnMoreClick, onTourClick }: HeroProps) {
   const [surkhetTime, setSurkhetTime] = useState("");
-  
+
   // Interactive Panel States
   const [leftExpanded, setLeftExpanded] = useState(true);
   const [rightExpanded, setRightExpanded] = useState(true);
@@ -72,10 +72,10 @@ export default function Hero({ onLearnMoreClick, onTourClick }: HeroProps) {
       {/* Background Video Media Canvas */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* MOBILE FALLBACK IMAGE */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center block lg:hidden"
-          style={{ 
-            backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtJs2NrKAcwg1S-y5HCWpNQzRCUw7X0zpz9MZUWKzXbcMn2gFSImj7pUkke_PBDmhZQaMfEcmBD_M3BUIaIXItJ6XMdxo4ElcrHnihjFbo62esRVwbLuAga_TR2rp1Jp-us341E2cJ6lmZyW3V3ZpTPNoYc2c7Gxl9ViQuFcmHjasAh0hTPUdcYQrgE8kay64QEkZDL3zQSjsujRcg6tVqkC271tdDcp121oAwLP9q6brOj15lYIXKkMhKFi8UpwSkVsglV5sumyA')` 
+          style={{
+            backgroundImage: `url('/dronephoto.png')`
           }}
         />
 
@@ -99,22 +99,22 @@ export default function Hero({ onLearnMoreClick, onTourClick }: HeroProps) {
 
       {/* Main Core Viewport Layout Container */}
       <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-end justify-between gap-6">
-        
+
         {/* ================= LEFT SIDE PANEL: MAIN HIGHLIGHTS INFO ================= */}
-        <motion.div 
+        <motion.div
           layout
           transition={{ type: "spring", stiffness: 200, damping: 26 }}
           onClick={() => !leftExpanded && setLeftExpanded(true)}
           className={`bg-slate-950/85 lg:bg-slate-950/45 lg:backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative overflow-hidden flex flex-col transition-all duration-300
-            ${leftExpanded 
-              ? "w-full lg:w-[58%] p-6 sm:p-10 lg:p-12 h-auto cursor-default" 
+            ${leftExpanded
+              ? "w-full lg:w-[58%] p-6 sm:p-10 lg:p-12 h-auto cursor-default"
               : "w-fit p-4 lg:p-5 h-auto bg-slate-950/95 cursor-pointer hover:bg-slate-900/90 hover:border-amber-500/40 hover:-translate-y-1 active:scale-98 select-none"
             }
           `}
         >
           {/* Collapse Action Button (Only visible when open) */}
           {leftExpanded && (
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation(); // Prevents immediate re-expansion trigger from bubbling to parent div
                 setLeftExpanded(false);
@@ -209,20 +209,20 @@ export default function Hero({ onLearnMoreClick, onTourClick }: HeroProps) {
 
 
         {/* ================= RIGHT SIDE PANEL: INTERACTIVE METRICS ================= */}
-        <motion.div 
+        <motion.div
           layout
           transition={{ type: "spring", stiffness: 200, damping: 26 }}
           onClick={() => !rightExpanded && setRightExpanded(true)}
           className={`bg-slate-950/85 lg:bg-slate-950/45 lg:backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative overflow-hidden flex flex-col transition-all duration-300
-            ${rightExpanded 
-              ? "w-full lg:w-[36%] p-6 sm:p-8 flex flex-col gap-4 lg:gap-6 h-auto cursor-default" 
+            ${rightExpanded
+              ? "w-full lg:w-[36%] p-6 sm:p-8 flex flex-col gap-4 lg:gap-6 h-auto cursor-default"
               : "w-fit p-4 lg:p-5 h-auto bg-slate-950/95 cursor-pointer hover:bg-slate-900/90 hover:border-amber-500/40 hover:-translate-y-1 active:scale-98 select-none"
             }
           `}
         >
           {/* Collapse Action Button (Only visible when open) */}
           {rightExpanded && (
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation(); // Prevents immediate re-expansion trigger from bubbling to parent div
                 setRightExpanded(false);
@@ -320,7 +320,7 @@ export default function Hero({ onLearnMoreClick, onTourClick }: HeroProps) {
       {/* Cinematic Mouse Indicator */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 hidden lg:block">
         <div className="w-6 h-9 border-2 border-white/20 rounded-full flex justify-center p-1 backdrop-blur-sm">
-          <motion.div 
+          <motion.div
             animate={{ y: [0, 10, 0], opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             className="w-1 h-1.5 bg-amber-400 rounded-full"
