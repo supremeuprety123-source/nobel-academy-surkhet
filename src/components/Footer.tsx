@@ -6,7 +6,7 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Exact coordinates extracted from your custom iframe string to pinpoint the school precisely without a registered name
+  const appPlayStoreUrl = "https://play.google.com/store/apps/details?id=com.ingrails.nobelacademysurkhet&hl=en";
   const coordinateEmbedUrl = "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3503.152816660898!2d81.59319432528761!3d28.59519202568519!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snp!4v1779763822934!5m2!1sen!2snp";
   const coordinateNavigationUrl = "https://www.google.com/maps/search/?api=1&query=28.595192,81.593194";
 
@@ -27,8 +27,8 @@ export default function Footer() {
           <div className="md:col-span-5 flex flex-col items-start gap-6">
             <div className="flex items-center gap-3">
               <img
-                src="/logo.png"
-                alt="Nobel Academy Logo"
+                src="/logo1.png"
+                alt="Nobel Academy Surkhet Logo"
                 className="w-10 h-10 object-contain rounded-full border border-amber-500/30 p-0.5 bg-white"
               />
               <span className="font-serif text-lg tracking-[0.2em] text-white uppercase font-medium">
@@ -41,38 +41,48 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2: Navigation Links */}
-          <div className="md:col-span-3">
+          {/* Column 2: Quick Links & Parent Portal Mobile Application */}
+          <div className="md:col-span-3 flex flex-col items-start">
             <h4 className="text-[10px] font-sans font-semibold text-amber-500 tracking-[0.25em] uppercase mb-8">
-
+              Quick Navigation
             </h4>
-            <ul className="space-y-4 text-xs sm:text-sm text-slate-400 font-light">
+            <ul className="space-y-4 text-xs sm:text-sm text-slate-400 font-light mb-6">
               <li>
-                <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-
+                <a href="#hero" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
+                  Home
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-
+                <a href="#about" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
+                  About Academy
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
-
+                <a href="#programs" className="hover:text-amber-500 hover:translate-x-1.5 transition-all inline-block">
+                  Programs
                 </a>
               </li>
             </ul>
+
+            <div className="w-full pt-4 border-t border-white/5">
+              <p className="text-[10px] font-mono uppercase tracking-wider text-slate-500 mb-3">
+                Smart Mobile Portal
+              </p>
+              <a
+                href={appPlayStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 bg-slate-900 border border-white/10 hover:border-amber-500/40 text-slate-300 hover:text-amber-400 px-4 py-2 transition-all group w-full sm:w-auto"
+              >
+                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover:scale-105 transition-transform">
+                  <path d="M3.609 1.814L13.783 12 3.609 22.186c-.181.181-.29.431-.29.706 0 .552.448 1 1 1 .275 0 .525-.11.706-.29l10.88-10.88c.181-.181.29-.431.29-.706s-.11-.525-.29-.706L5.025.122C4.844-.059 4.594-.17 4.319-.17c-.552 0-1 .448-1 1 0 .275.11.525.29.706zM15.433 12l5.457-5.457c.391-.391.391-1.024 0-1.414s-1.024-.391-1.414 0L14.019 10.59 15.433 12z" />
+                </svg>
+                <div className="flex flex-col items-start text-left">
+                  <span className="text-[8px] font-mono uppercase tracking-tight text-slate-500 leading-none">Get it on</span>
+                  <span className="text-xs font-sans font-bold leading-tight">Google Play</span>
+                </div>
+              </a>
+            </div>
           </div>
 
           {/* Column 3: Contact Info & Integrated Social Grid */}
@@ -110,7 +120,6 @@ export default function Footer() {
                   Connect With Nobel
                 </p>
                 <div className="flex flex-wrap gap-2.5">
-
                   {/* Facebook */}
                   <a
                     href="https://www.facebook.com/Nobelskt"
@@ -154,19 +163,6 @@ export default function Footer() {
                   >
                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover:scale-105 transition-transform">
                       <path d="M12.525.02c1.31 0 2.58.33 3.7.94a7.1 7.1 0 01-2.73 4.41c-.04-.84-.04-1.68-.03-2.52v12.28c0 2.37-1.4 4.5-3.6 5.3a5.75 5.75 0 01-6.9-2.22 6.07 6.07 0 01-.13-6.8 5.7 5.7 0 014.88-2.9c.04 1.52.04 1.52-.02 3.03a2.76 2.76 0 00-1.86.86 3.03 3.03 0 00.7 4.7 2.8 2.8 0 003.56-.88c.3-.5.44-1.07.42-1.65V0h1.98z" />
-                    </svg>
-                  </a>
-
-                  {/* X (formerly Twitter) */}
-                  <a
-                    href="https://x.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 border border-white/10 hover:border-amber-500/40 text-slate-400 flex items-center justify-center hover:text-amber-400 transition-all bg-slate-900 group"
-                    title="X (Twitter)"
-                  >
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover:scale-105 transition-transform">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                     </svg>
                   </a>
 
