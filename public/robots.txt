@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Direct link to your newly approved sitemap
+Sitemap: https://www.nobelacademysurkhet.com.np/sitemap.xml
