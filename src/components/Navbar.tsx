@@ -34,7 +34,6 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
 
   // 2. Intersection Observer: Updates underline and URL automatically as you scroll down the page
   useEffect(() => {
-    // If we are currently browsing on a standalone sub-route, sync active highlight with url path
     if (location.pathname !== "/") {
       const currentItem = navItems.find(item => item.to === location.pathname);
       if (currentItem) setActiveSection(currentItem.sectionId || "");
@@ -45,14 +44,11 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        // If a section occupies the viewport viewport focal sweetspot, activate it
         if (entry.isIntersecting && entry.boundingClientRect.top < window.innerHeight * 0.4) {
           setActiveSection(entry.target.id);
 
-          // Match section back to its navItem route destination path mapping
           const matchedItem = navItems.find(item => item.sectionId === entry.target.id);
           if (matchedItem && location.pathname === "/") {
-            // Silently updates the window path in the address bar without creating infinite history pop reloads
             window.history.replaceState(null, "", matchedItem.to);
           }
         }
@@ -61,7 +57,7 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
 
     const observerOptions = {
       root: null,
-      rootMargin: "-25% 0px -55% 0px", // Strict viewing area framework wrapper targeting page center
+      rootMargin: "-25% 0px -55% 0px",
       threshold: 0
     };
 
@@ -89,16 +85,12 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
       e.preventDefault();
       const targetElement = document.getElementById(item.sectionId);
       if (targetElement) {
-        // Perform smooth scroll transition to targeted DOM node element position
         targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
         setActiveSection(item.sectionId);
-
-        // Pushes the descriptive page route name into the browser address bar dynamically
         navigate(item.to, { replace: true });
       }
       setIsMobileMenuOpen(false);
     } else {
-      // Traditional routing path if clicked from a isolated outside nested webpage module
       setIsMobileMenuOpen(false);
     }
   };
@@ -118,26 +110,27 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${isScrolled ? "py-4 px-4 md:px-8" : "py-6 px-6 md:px-12"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "py-3 px-4 md:px-8" : "py-6 px-6 md:px-12"
           }`}
       >
         <div
           className={`mx-auto max-w-7xl transition-all duration-500 rounded-full ${isScrolled
-              ? "bg-navy-950/75 backdrop-blur-xl border border-gold-300/15 py-3 px-6 shadow-2xl shadow-gold-400/5"
-              : "bg-transparent py-2 px-4 border border-transparent"
+            ? "bg-navy-950/85 backdrop-blur-xl border border-gold-300/15 py-3 px-6 shadow-2xl shadow-gold-400/5"
+            : "bg-transparent py-2 px-4 border border-transparent"
             }`}
         >
           <div className="flex items-center justify-between">
             {/* Logo area */}
-            <Link to="/" onClick={(e) => handleNavigation(e, navItems[0])} className="flex items-center gap-4 group">
+            <Link to="/" onClick={(e) => handleNavigation(e, navItems[0])} className="flex items-center gap-3 md:gap-4 group">
               <img
                 src="/logo.png"
                 alt="Nobel Academy Logo"
-                className="w-10 h-10 object-contain rounded-full border border-gold-500/30 p-0.5 group-hover:scale-105 transition-all duration-500 bg-white"
+                className="w-9 h-9 md:w-10 md:h-10 object-contain rounded-full border border-gold-500/30 p-0.5 group-hover:scale-105 transition-all duration-500 bg-white"
               />
               <div className="flex flex-col">
-                <span className="font-sans font-bold tracking-[0.2em] text-sm uppercase text-white">
-                  NOBEL <span className="text-gold-500">Academy Surkhet</span>
+                <span className="font-sans font-bold tracking-[0.15em] md:tracking-[0.2em] text-xs md:text-sm uppercase text-white">
+                  NOBEL <span className="text-gold-500 hidden sm:inline">Academy Surkhet</span>
+                  <span className="text-gold-500 sm:hidden">Academy Surkhet</span>
                 </span>
               </div>
             </Link>
@@ -167,7 +160,7 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
               })}
             </nav>
 
-            {/* Action buttons */}
+            {/* Desktop Action button */}
             <div className="hidden md:flex items-center gap-4">
               <button
                 onClick={onInquireClick}
@@ -179,18 +172,19 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
             </div>
 
             {/* Mobile menu trigger */}
-            <div className="flex items-center md:hidden gap-3">
+            <div className="flex items-center md:hidden gap-2">
               <button
                 onClick={onInquireClick}
-                className="bg-gold-300/10 text-gold-300 p-2 rounded-full border border-gold-300/20"
+                className="bg-gold-300/10 text-gold-300 p-2 rounded-full border border-gold-300/20 active:scale-95 transition-transform"
               >
                 <Sparkles className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-navy-100 hover:text-gold-300 focus:outline-none p-2 rounded-lg border border-navy-100/10"
+                className="text-navy-100 hover:text-gold-300 focus:outline-none p-2 rounded-lg border border-navy-100/10 active:scale-95 transition-transform z-50 relative"
+                aria-label="Toggle Menu"
               >
-                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {isMobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
@@ -204,28 +198,32 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-30 bg-navy-950/95 backdrop-blur-2xl md:hidden flex flex-col justify-center px-8"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-navy-950/98 backdrop-blur-xl md:hidden flex flex-col justify-between pt-28 pb-8 px-6 overflow-y-auto"
           >
-            <div className="absolute top-24 left-8 text-xs font-serif text-gold-300/50 uppercase tracking-widest">
+            {/* Top subtitle decoration */}
+            <div className="text-[10px] font-sans text-gold-300/40 uppercase tracking-[0.25em] mb-4 border-b border-gold-500/10 pb-2">
               A Sanctuary of Higher Learning
             </div>
 
-            <nav className="flex flex-col gap-8">
+            {/* Vertical Menu Links */}
+            <nav className="flex flex-col gap-4 my-auto">
               {navItems.map((item, i) => {
                 const active = isItemActive(item);
                 return (
                   <motion.div
                     key={item.name}
-                    initial={{ x: -30, opacity: 0 }}
+                    initial={{ x: -15, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: -25, opacity: 0 }}
-                    transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
+                    exit={{ x: -10, opacity: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.3, ease: "easeOut" }}
                   >
                     <Link
                       to={item.to}
                       onClick={(e) => handleNavigation(e, item)}
-                      className={`text-3xl font-serif uppercase tracking-wide block transition-colors ${active ? "text-gold-400" : "text-navy-50 hover:text-gold-300"
+                      className={`text-xl font-sans uppercase font-semibold tracking-wider block py-2 transition-colors ${active
+                        ? "text-gold-400 border-l-2 border-gold-400 pl-3"
+                        : "text-navy-100 hover:text-gold-300 pl-3 border-l-2 border-transparent"
                         }`}
                     >
                       {item.name}
@@ -235,23 +233,24 @@ export default function Navbar({ onInquireClick }: NavbarProps) {
               })}
             </nav>
 
+            {/* Bottom Panel Actions */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 15 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="mt-16 flex flex-col gap-6"
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+              className="mt-8 flex flex-col gap-4 w-full"
             >
               <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);
                   onInquireClick();
                 }}
-                className="w-full justify-center bg-gold-300 text-navy-950 font-semibold tracking-widest text-xs py-4 rounded-full uppercase flex items-center gap-3 hover:bg-white transition-all shadow-[0_0_20px_rgba(233,193,118,0.2)]"
+                className="w-full justify-center bg-gradient-to-r from-gold-400 to-gold-500 text-navy-950 font-bold tracking-widest text-xs py-3.5 rounded-full uppercase flex items-center gap-2 active:scale-[0.98] transition-all shadow-lg shadow-gold-500/10"
               >
                 Inquire Now <ArrowRight className="w-4 h-4" />
               </button>
-              <div className="text-center text-[10px] text-navy-100/30 tracking-widest mt-4">
+              <div className="text-center text-[9px] text-navy-100/40 tracking-[0.2em] mt-2">
                 BIRENDRANAGAR, SURKHET, NEPAL
               </div>
             </motion.div>

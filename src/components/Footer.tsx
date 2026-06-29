@@ -32,7 +32,7 @@ export default function Footer() {
                 className="w-10 h-10 object-contain rounded-full border border-amber-500/30 p-0.5 bg-white"
               />
               <span className="font-serif text-lg tracking-[0.2em] text-white uppercase font-medium">
-                NOBEL <span className="text-amber-500 font-light">Academy</span>
+                NOBEL <span className="text-amber-500 font-light">Academy Surkhet</span>
               </span>
             </div>
 
